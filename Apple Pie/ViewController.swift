@@ -8,12 +8,126 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+//MARK: IB Outlets
+    @IBOutlet weak var treeImageView: UIImageView!
+    @IBOutlet var letterButtons: [UIButton]!
+    @IBOutlet weak var coorectWodrLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
+    
+    
+    var currentGame: Game!
+    
+    let incorrectMovesAllowed = 7
+    var listOfWords = [
+        "Андромеда",
+        "Близнецы",
+        "Большая Медведица",
+        "Большой Пёс",
+        "Весы",
+        "Водолей",
+        "Возничий",
+        "Волк",
+        "Волопас",
+        "Волосы Вероники",
+        "Ворон",
+        "Геркулес",
+        "Гидра",
+        "Голубь",
+        "Гончие Псы",
+        "Дева",
+        "Дельфин",
+        "Дракон",
+        "Единорог",
+        "Жертвенник",
+        "Живописец",
+        "Жираф",
+        "Журавль",
+        "Заяц",
+        "Змееносец",
+        "Змея",
+        "Золотая Рыба",
+        "Индеец",
+        "Кассиопея",
+        "Киль",
+        "Кит",
+        "Козерог",
+        "Компас",
+        "Корма",
+        "Лебедь",
+        "Лев",
+        "Летучая Рыба",
+        "Лира",
+        "Лисичка",
+        "Малая Медведица",
+        "Малый Конь",
+        "Малый Лев",
+        "Малый Пёс",
+        "Микроскоп",
+        "Муха",
+        "Насос",
+        "Наугольник",
+        "Овен",
+        "Октант",
+        "Орёл",
+        "Орион",
+        "Павлин",
+        "Паруса",
+        "Пегас",
+        "Персей",
+        "Печь",
+        "Райская Птица",
+        "Рак",
+        "Резец",
+        "Рыбы",
+        "Рысь",
+        "Северная Корона",
+        "Секстант",
+        "Сетка",
+        "Скорпион",
+        "Скульптор",
+        "Столовая Гора",
+        "Стрела",
+        "Стрелец",
+        "Телескоп",
+        "Телец",
+        "Треугольник",
+        "Тукан",
+        "Феникс",
+        "Хамелеон",
+        "Центавр",
+        "Цефей",
+        "Циркуль",
+        "Часы",
+        "Чаша",
+        "Щит",
+        "Эридан",
+        "Ящерица"]
+    
+    var totalWins = 0
+    var totalLosses = 0
+    
+    func newRound() {
+        let newWord = listOfWords.removeFirst()
+        currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed)
+        updateUI()
+        
+    }
+    func updateUI() {
+        let movesRemaining = currentGame.incorrectMovesRemaining
+        let image = "Tree\(movesRemaining < 8 ? movesRemaining : 7)"
+        treeImageView.image = UIImage(named: image)
+        scoreLabel.text = "Выигрышы \(totalWins), проигрышы: \(totalLosses)"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        newRound()
     }
+    
 
-
+//MARK: - IB Actions
+    @IBAction func letterButtonPressed(_ sender: UIButton) {
+        sender.isEnabled = false
+    }
 }
 
