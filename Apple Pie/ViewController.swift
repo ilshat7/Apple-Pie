@@ -11,7 +11,7 @@ class ViewController: UIViewController {
 //MARK: IB Outlets
     @IBOutlet weak var treeImageView: UIImageView!
     @IBOutlet var letterButtons: [UIButton]!
-    @IBOutlet weak var coorectWodrLabel: UILabel!
+    @IBOutlet weak var correctWodrLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     
     
@@ -112,10 +112,19 @@ class ViewController: UIViewController {
         updateUI()
         
     }
+    
+    func updateCorrectWordLabel() {
+        var displayWord = [String]()
+        for letter in currentGame.gessedWord {
+            displayWord.append(String(letter))
+        }
+        correctWodrLabel.text = displayWord.joined(separator: " ")
+    }
     func updateUI() {
         let movesRemaining = currentGame.incorrectMovesRemaining
-        let image = "Tree\(movesRemaining < 8 ? movesRemaining : 7)"
+        let image = "Tree\(movesRemaining < 0 ? 0 : movesRemaining < 8 ? movesRemaining : 7)"
         treeImageView.image = UIImage(named: image)
+        updateCorrectWordLabel()
         scoreLabel.text = "Выигрышы \(totalWins), проигрышы: \(totalLosses)"
     }
     
@@ -128,6 +137,9 @@ class ViewController: UIViewController {
 //MARK: - IB Actions
     @IBAction func letterButtonPressed(_ sender: UIButton) {
         sender.isEnabled = false
+        let letter = sender.title(for: .normal)!
+        currentGame.playerGuessed(letter: Character(letter))
+        updateUI()
     }
 }
 

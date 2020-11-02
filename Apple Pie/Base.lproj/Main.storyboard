@@ -337,7 +337,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="coorectWodrLabel" destination="6bt-WH-QbS" id="LHF-D1-ma1"/>
+                        <outlet property="correctWodrLabel" destination="6bt-WH-QbS" id="LHF-D1-ma1"/>
                         <outlet property="scoreLabel" destination="ihm-Do-kDR" id="atB-8e-sGg"/>
                         <outlet property="treeImageView" destination="F40-bp-Dp0" id="jaJ-yf-13h"/>
                         <outletCollection property="letterButtons" destination="luE-zp-xGW" collectionClass="NSMutableArray" id="4st-AV-Dtx"/>
