@@ -8,7 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-//MARK: IB Outlets
+//MARK:- IB Outlets
     @IBOutlet weak var treeImageView: UIImageView!
     @IBOutlet var letterButtons: [UIButton]!
     @IBOutlet weak var correctWodrLabel: UILabel!
@@ -101,16 +101,36 @@ class ViewController: UIViewController {
         "Чаша",
         "Щит",
         "Эридан",
-        "Ящерица"]
+        "Ящерица"].shuffled()
     
-    var totalWins = 0
-    var totalLosses = 0
+    var totalWins = 0 {
+        didSet {
+            newRound()
+        }
+    }
+    var totalLosses = 0 {
+        didSet {
+            newRound()
+        }
+    }
+    //MARK:- Methods
+    
+    func enableButtons(_ enable: Bool = true) {
+        for button in letterButtons {
+            button.isEnabled = enable
+        }
+    }
     
     func newRound() {
+        guard !listOfWords.isEmpty else {
+            enableButtons(false)
+            updateUI()
+            return
+        }
         let newWord = listOfWords.removeFirst()
         currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed)
         updateUI()
-        
+        enableButtons()
     }
     
     func updateCorrectWordLabel() {
@@ -120,6 +140,17 @@ class ViewController: UIViewController {
         }
         correctWodrLabel.text = displayWord.joined(separator: " ")
     }
+    
+    func updateState() {
+        if currentGame.incorrectMovesRemaining < 1 {
+            totalLosses += 1
+        } else if currentGame.gessedWord == currentGame.word {
+            totalWins += 1
+        } else {
+            updateUI()
+        }
+    }
+    
     func updateUI() {
         let movesRemaining = currentGame.incorrectMovesRemaining
         let image = "Tree\(movesRemaining < 0 ? 0 : movesRemaining < 8 ? movesRemaining : 7)"
@@ -139,7 +170,7 @@ class ViewController: UIViewController {
         sender.isEnabled = false
         let letter = sender.title(for: .normal)!
         currentGame.playerGuessed(letter: Character(letter))
-        updateUI()
+        updateState()
     }
 }
 
